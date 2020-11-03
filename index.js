@@ -49,6 +49,7 @@ function validarUsuarioLog(req, res, next) {
 //Gestión de productos
 server.get('/productos', productos.consultarProductos)
 server.post('/productos', validacionAdministrador, productos.crearProducto)
+server.get('/productos/:id', productos.consultarDetalleProducto)
 server.put('/productos/:id', validacionAdministrador, productos.modificarProducto)
 server.delete('/productos/:id', validacionAdministrador, productos.eliminarProducto)
 

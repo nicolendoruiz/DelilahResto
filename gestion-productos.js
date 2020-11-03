@@ -6,6 +6,13 @@ async function consultarProductos(req, res) {
         .then(result => res.status(200).json(result));
 };
 
+async function consultarDetalleProducto(req, res) {
+    const idProducto = req.params.id
+    await sequelize.query(`SELECT * FROM producto where prod_id = ${idProducto}`,
+        { type: QueryTypes.SELECT })
+        .then(result => res.status(200).json(result));
+};
+
 async function crearProducto(req, res) {
     await sequelize.query(`INSERT INTO producto(prod_nombre, prod_descripcion, prod_imagen, prod_precio) 
     VALUES (:prod_nombre, :prod_descripcion, :prod_imagen, :prod_precio)`,
@@ -33,6 +40,7 @@ async function eliminarProducto(req, res) {
 
 module.exports = {
     consultarProductos,
+    consultarDetalleProducto,
     crearProducto,
     modificarProducto,
     eliminarProducto
