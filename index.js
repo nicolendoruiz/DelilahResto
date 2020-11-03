@@ -63,5 +63,5 @@ server.delete("/usuarios/:id", validacionAdministrador, usuarios.eliminarUsuario
 server.get('/pedidos', validacionAdministrador, pedidos.consultarPedidos)
 server.post('/pedidos', validarUsuarioLog, pedidos.crearPedido)
 server.get('/pedidos/:id', validarUsuarioLog, pedidos.consultarDetallePedido)
-// server.put('/pedidos/:id', )
+server.put('/pedidos/:id', validacionAdministrador, pedidos.modificarPedido)
 server.delete('/pedidos/:id', validacionAdministrador, pedidos.eliminarPedido) 

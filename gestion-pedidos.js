@@ -75,9 +75,18 @@ async function eliminarPedido(req, res) {
     }
 };
 
+async function modificarPedido(req, res) {
+    const idPedido = req.params.id
+    const estadoActualizar = req.body.estado
+    sequelize.query(`INSERT INTO historial_estado_pedido(pedi_id, espe_id) VALUES (${idPedido},${estadoActualizar})`)
+        .then(result => console.log(result) || res.status(200).json('El estado del pedido ha sido actualizado'))
+        .catch(err => console.log(err) || res.status(400).send('Información inválida, intente nuevamente.'))
+};
+
 module.exports = {
     consultarPedidos,
     crearPedido,
     consultarDetallePedido,
+    modificarPedido,
     eliminarPedido
 };
