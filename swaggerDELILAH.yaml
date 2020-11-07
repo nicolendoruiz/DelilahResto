@@ -1,0 +1,424 @@
+swagger: "2.0"
+info:
+  description: "Sistema para la gestión de pedidos en un restaurante"
+  version: "1.0.0"
+  title: "Delilah Restó"
+  contact:
+    email: "nicolendoruiz@gmail.com"
+host: "localhost:3000"
+tags:
+- name: "producto"
+  description: "Operaciones sobre productos"
+- name: "pedido"
+  description: "Operaciones sobre pedidos"
+- name: "usuario"
+  description: "Operaciones sobre usuarios"
+schemes:
+- "http"
+paths:
+  /productos:
+    post:
+      tags:
+      - "producto"
+      summary: "Agrega un nuevo producto al restaurante"
+      description: ""
+      operationId: "addproducto"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objeto producto que debe registrarse"
+        required: true
+        schema:
+          $ref: "#/definitions/producto"
+      responses:
+        "200":
+          description: "El producto se ha registrado correctamente."
+        "400":
+          description: "Información inválida, intente nuevamente."
+    get:
+      tags:
+      - "producto"
+      summary: "Consulta todos los productos registrados"
+      description: "Retorna todos los productos registrados"
+      operationId: "getproductos"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/producto"
+  /productos/{id}:
+    put:
+      tags:
+      - "producto"
+      summary: "Modificar un producto"
+      description: "Esto solo lo puede hacer el usuario cn rol de administrado."
+      operationId: "updateproducto"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "El id del producto que debe modificarse"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Objeto de producto actualizado"
+        required: true
+        schema:
+              type: object
+              properties:
+                prod_precio:
+                  type: string
+                prod_estado:
+                  type: integer
+              example:   # Sample object
+                prod_precio: 4000
+                prod_estado: 1
+      responses:
+        "200":
+          description: "La información se ha actualizado correctamente"
+        "400":
+          description: "Información inválida, intente nuevamente."
+    delete:
+      tags:
+      - "producto"
+      summary: "Elimina un producto"
+      description: "Operación realizada por un usuario administrador"
+      operationId: "deleteproducto"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id del producto a eliminar"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "El producto se ha eliminado correctamente"
+        "400":
+          description: "Información inválida, intente nuevamente."
+    get:
+      tags:
+      - "producto"
+      summary: "Consulta del detalle de un producto"
+      description: ""
+      operationId: "getproductoid"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id del producto a consultar"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+         "200":
+          description: "Operación exitosa"
+          schema:
+            $ref: "#/definitions/producto"
+  /pedidos:
+    get:
+      tags:
+      - "pedido"
+      summary: "Consulta pedidos registrados"
+      description: "La acción solo la puede realizar un usuario administrador"
+      operationId: "getpedidos"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+    post:
+      tags:
+      - "pedido"
+      summary: "Agrega un nuevo pedido al restaurante"
+      description: ""
+      operationId: "addpedido"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objeto pedido que debe registrarse"
+        required: true
+        schema:
+          $ref: "#/definitions/pedido"
+      responses:
+        "200":
+          description: "El pedido se ha registrado correctamente."
+        "400":
+          description: "Información inválida, intente nuevamente."
+  /pedidos/{id}:
+    get:
+      tags:
+      - "pedido"
+      summary: "Consulta el detalle del pedido por ID"
+      description: ""
+      operationId: "getpedidoById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Id del pedido a consultar"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+    delete:
+      tags:
+      - "pedido"
+      summary: "Delete purchase pedido by ID"
+      description: ""
+      operationId: "deletepedido"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID del pedido a borrar"
+        required: true
+        type: "integer"
+        minimum: 1.0
+        format: "int64"
+      responses:
+        "200":
+          description: "El pedido se ha eliminado correctamente"
+        "400":
+          description: "El pedido no se puede eliminar por el estado en que se encuentra"
+        "404":
+          description: "No existen pedido registrados con ese id"
+    put:
+      tags:
+      - "pedido"
+      summary: "Put pedido by ID"
+      description: ""
+      operationId: "putpedido"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID del pedido a modificar"
+        required: true
+        type: "integer"
+        minimum: 1.0
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Objeto de pedido actualizado"
+        required: true
+        schema:
+              type: object
+              properties:
+                estado:
+                  type: string
+              example:   # Sample object
+                estado: 3
+      responses:
+        "200":
+          description: "El estado del pedido ha sido actualizado"
+        "400":
+          description: "Información inválida, intente nuevamente."
+        "404":
+          description: "No se ha encontrado un pedido con ese id"
+  /usuarios:
+    post:
+      tags:
+      - "usuario"
+      summary: "Creación de usuario"
+      description: "Permite la creación de usuarios en plataforma"
+      operationId: "createusuario"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objeto de usuario creado"
+        required: true
+        schema:
+          $ref: "#/definitions/usuario"
+      responses:
+        "200":
+          description: "El usuario se ha registrado correctamente."
+        "400":
+          description: "Información inválida, intente nuevamente."
+    get:
+      tags:
+      - "usuario"
+      summary: "Consulta de usuarios"
+      description: "Consulta de todos los usuarios registrados. Esta consulta la puede realizar un usuario con rol de administrador"
+      operationId: "getusuario"
+      produces:
+      - "application/json"
+      responses:
+         "200":
+          description: "Operación exitosa"
+          schema:
+            $ref: "#/definitions/usuario"
+    put:
+      tags:
+      - "usuario"
+      summary: "Modificar un usuario"
+      description: "Esto solo lo puede hacer el usuario logueado."
+      operationId: "updateusuario"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objeto de usuario actualizado"
+        required: true
+        schema:
+              type: object
+              properties:
+                usua_direccion:
+                  type: string
+                usua_telefono:
+                  type: integer
+                usua_correo:
+                  type: string
+              example:   # Sample object
+                usuario: Cra 4e 43 Bogotá
+                usua_telefono: 22334455
+                usua_correo: dayana.en@correo.co
+      responses:
+        "200":
+          description: "La información se ha actualizado correctamente"
+        "400":
+          description: "Información inválida, intente nuevamente."
+  /usuarios/login:
+    post:
+      tags:
+      - "usuario"
+      summary: "Login de usuario"
+      description: "Permite el logueo del usuario en el sistema"
+      operationId: "loginusuario"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objeto de usuario para login"
+        required: true
+        schema:
+              type: object
+              properties:
+                usuario:
+                  type: string
+                contrasenia:
+                  type: string
+              example:   # Sample object
+                usuario: dayana.ruiz
+                contrasenia: dayana.ruiz
+      responses:
+        "200":
+          description: "Se genera token de acceso"
+        "400":
+          description: "Información inválida, usuario o contraseña incorrectos."
+  /usuarios/{id}:
+    delete:
+      tags:
+      - "usuario"
+      summary: "Eliminar usuario"
+      description: "Esto solo lo puede hacer el usuario registrado con rol de administrador."
+      operationId: "deleteusuario"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "El id del usuario que debe eliminarse"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "El usuario se ha eliminado correctamente"
+        "400":
+          description: "Información inválida, intente nuevamente."
+definitions:
+  pedido:
+    type: "object"
+    properties:
+      tipa_id:
+        type: "integer"
+        format: "int64"
+      detalles:
+        type: "array"
+        items:
+          $ref: "#/definitions/detallepedido"
+    xml:
+      name: "pedido"
+  usuario:
+    type: "object"
+    properties:
+      usua_nombre :
+        type: "string"
+        example: "Nicol"
+      usua_apellido:
+        type: "string"
+        example: "Endo"
+      usua_username :
+        type: "string"
+        description: "Nombre de usuario único"
+        example: "n.endoruiz"
+      usua_password:
+        type: "string"
+        example: "n.endoruiz"
+      usua_direccion:
+        type: "string"
+        example: "Cll2 30-30"
+      usua_telefono:
+        type: "integer"
+        format: "int64"
+        example: "10348294"
+      usua_correo:
+        type: "string"
+        example: "correo@correo.com"
+    xml:
+      name: "usuario"
+  detallepedido:
+    type: "object"
+    properties:
+      prod_id:
+        type: "integer"
+        format: "int64"
+      depe_cantidad:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "Detallepedido"
+  producto:
+    type: "object"
+    required:
+    - "prod_nombre"
+    - "photoUrls"
+    properties:
+      prod_nombre:
+        type: "string"
+        example: "Hamburguesa clásica"
+      prod_descripcion:
+        type: "string"
+        example: "Hamburguesa hecha a la parrilla"
+      prod_imagen:
+        type: "string"
+      prod_precio:
+        type: "integer"
+        format: "int64"
+        example: 3000
+    xml:
+      name: "producto"

@@ -25,10 +25,16 @@ async function modificarUsuario(req, res) {
 };
 
 async function eliminarUsuario(req, res) {
-    await sequelize.query(`DELETE FROM usuario WHERE usua_id = ${req.params.id}`,
-        { type: sequelize.QueryTypes.DELETE })
-        .then(result => console.log(result) || res.status(200).json('El usuario se ha eliminado correctamente'))
-        .catch(err => console.log(err) || res.status(400).send('Información inválida, intente nuevamente.'))
+    let datosUser = await sequelize.query(`SELECT * FROM usuario WHERE usua_id = ${req.params.id}`,
+        { type: sequelize.QueryTypes.SELECT });
+    if (JSON.stringify(datosUser) !== '[]') {
+        await sequelize.query(`DELETE FROM usuario WHERE usua_id = ${req.params.id}`,
+            { type: sequelize.QueryTypes.DELETE })
+            .then(result => console.log(result) || res.status(200).json('El usuario se ha eliminado correctamente'))
+            .catch(err => console.log(err) || res.status(400).send('Información inválida, intente nuevamente.'))
+    } else {
+        res.status(400).send('Información inválida, no se ha encontrado un usuario con los datos ingresados.')
+    }
 };
 
 async function iniciarSesion(req, res) {

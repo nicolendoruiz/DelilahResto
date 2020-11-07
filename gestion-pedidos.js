@@ -59,10 +59,10 @@ async function eliminarPedido(req, res) {
         estadopedidoconst = await sequelize.query(`SELECT * FROM historial_estado_pedido hiep
                 INNER JOIN estado_pedido espe ON hiep.espe_id= espe.espe_id 
                 where hiep_id IN 
-                (SELECT MAX(hiep_id) FROM historial_estado_pedido WHERE pedi_id=${result[0].pedi_id})`,
+                (SELECT MAX(hiep_id) FROM historial_estado_pedido WHERE pedi_id=${req.params.id})`,
             { type: sequelize.QueryTypes.SELECT })
     } else {
-        return res.status(400).json(`No hay pedidos registrados con número ${req.params.id}`);
+        return res.status(404).json(`No hay pedidos registrados con número ${req.params.id}`);
     }
     if (estadopedidoconst[0].espe_id == "1") {
         sequelize.query(`DELETE FROM pedido WHERE pedi_id = ${req.params.id}`, { type: sequelize.QueryTypes.DELETE })
@@ -78,9 +78,15 @@ async function eliminarPedido(req, res) {
 async function modificarPedido(req, res) {
     const idPedido = req.params.id
     const estadoActualizar = req.body.estado
-    sequelize.query(`INSERT INTO historial_estado_pedido(pedi_id, espe_id) VALUES (${idPedido},${estadoActualizar})`)
-        .then(result => console.log(result) || res.status(200).json('El estado del pedido ha sido actualizado'))
-        .catch(err => console.log(err) || res.status(400).send('Información inválida, intente nuevamente.'))
+    let datosPedido = await sequelize.query(`SELECT * FROM pedido WHERE pedi_id = ${idPedido}`,
+        { type: sequelize.QueryTypes.SELECT });
+    if (JSON.stringify(datosPedido) !== '[]') {
+        await sequelize.query(`INSERT INTO historial_estado_pedido(pedi_id, espe_id) VALUES (${idPedido},${estadoActualizar})`)
+            .then(result => console.log(result) || res.status(200).json('El estado del pedido ha sido actualizado'))
+            .catch(err => console.log(err) || res.status(400).send('Información inválida, intente nuevamente.'))
+    } else {
+        res.status(404).send('Información inválida, no se ha encontrado un pedido con los datos ingresados.')
+    }
 };
 
 module.exports = {

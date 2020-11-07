@@ -32,10 +32,16 @@ async function modificarProducto(req, res) {
 };
 
 async function eliminarProducto(req, res) {
-    await sequelize.query(`DELETE FROM producto WHERE prod_id = ${req.params.id}`,
-        { type: sequelize.QueryTypes.DELETE })
-        .then(result => console.log(result) || res.status(200).json('El producto se ha eliminado correctamente'))
-        .catch(err => console.log(err) || res.status(400).send('Información inválida, intente nuevamente.'))
+    let datosProducto = await sequelize.query(`SELECT * FROM producto WHERE prod_id = ${req.params.id}`,
+        { type: sequelize.QueryTypes.SELECT });
+    if (JSON.stringify(datosProducto) !== '[]') {
+        await sequelize.query(`DELETE FROM producto WHERE prod_id = ${req.params.id}`,
+            { type: sequelize.QueryTypes.DELETE })
+            .then(result => console.log(result) || res.status(200).json('El producto se ha eliminado correctamente'))
+            .catch(err => console.log(err) || res.status(400).send('Información inválida, intente nuevamente.'))
+    } else {
+        res.status(400).send('Información inválida, no se ha encontrado un producto con los datos ingresados.')
+    }
 };
 
 module.exports = {
