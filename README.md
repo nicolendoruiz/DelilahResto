@@ -13,3 +13,12 @@ API Rest para la gestión de pedidos en un restaurante: CRUD Usuarios, CRUD Prod
 - El archivo principal es index.js el cual se deberá ejecutar (node index.js). La aplicación está utilizando el puerto 3000.
 
 - En el archivo swaggerDELILAH.yaml se encuentra la documentación de la api relacionando los endpoints y las peticiones respectivas. Se recomienda usar Postman.
+
+# Dependencias 
+
+•	BODY-PARSER
+•	CORS
+•	EXPRESS
+•	JSONWEBTOKEN
+•	MYSQL2
+•	SEQUELIZE
