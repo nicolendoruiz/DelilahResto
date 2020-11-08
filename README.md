@@ -1,9 +1,6 @@
 # Delilah Restó
 
-API Rest para la gestión de pedidos en un restaurante:
-   -CRUD Usuarios
-   -CRUD Productos
-   -CRUD Pedidos
+API Rest para la gestión de pedidos en un restaurante: CRUD Usuarios, CRUD Productos yCRUD Pedidos
 
 # Configuración
 
