@@ -1,6 +1,8 @@
-# DelilahResto
+# Delilah Restó
 
-API Rest para la gestión de pedidos en un restaurante.
+API Rest para la gestión de pedidos en un restaurante: CRUD Usuarios, CRUD Productos yCRUD Pedidos
+
+# Configuración
 
 - Para iniciar el servidor se deben instalar las respectivas dependencias de npm relacionadas en el archivo 'package.json' (npm install).
 
