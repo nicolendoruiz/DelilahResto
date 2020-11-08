@@ -17,8 +17,13 @@ API Rest para la gestión de pedidos en un restaurante: CRUD Usuarios, CRUD Prod
 # Dependencias 
 
 •	BODY-PARSER
+
 •	CORS
+
 •	EXPRESS
+
 •	JSONWEBTOKEN
+
 •	MYSQL2
+
 •	SEQUELIZE
